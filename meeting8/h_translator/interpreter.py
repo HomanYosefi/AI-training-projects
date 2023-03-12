@@ -20,7 +20,7 @@ def read_from_file():
 
     f.close()
 
-def english_to_farsi():
+def english_to_farsi(output):
     user_text = input("enter your english text : ")
     
 
@@ -37,7 +37,7 @@ def english_to_farsi():
             output = output + user_word + " "
 
     print(output)  
-    khondan("en")      
+    khondan_en(output)      
 
 
 def farsi_to_english():
@@ -56,11 +56,24 @@ def farsi_to_english():
             output = output + user_word + " "
 
     print(output)
-    khondan("ar")
+    khondan_fa()
 
 
-def khondan(langeg):
-    voice = gtts.gTTS(output, lang=langeg, slow=False)    
+def add_to_data_base():
+    f = open("meeting\AI-training-projects\meeting8\h_translator\h_translate.txt", "a")
+    word_en = input("enter word english : ")
+    word_fa = input("enter word farsi : ")
+    f.write(f"\n{word_en}")
+    f.write(f"\n{word_fa}")
+    f.close()
+
+
+def khondan_en(outputs):
+    voice = gtts.gTTS(outputs, lang="en", slow=False)    
+    voice.save("meeting\AI-training-projects\meeting8\h_translator\h_voice.mp3")
+
+def khondan_fa():
+    voice = gtts.gTTS(output, lang="ar", slow=False)
     voice.save("meeting\AI-training-projects\meeting8\h_translator\h_voice.mp3")
 
 
@@ -68,11 +81,18 @@ read_from_file()
 
 print("[1]-- english to farsi")
 print("[2]-- farsi to english ")
+print("[3]-- add to data base")
 
 list_translate = int(input(" enter number of list : "))
 
 if list_translate == 1:
-    english_to_farsi()
+    english_to_farsi(output)
 
 elif list_translate == 2:
     farsi_to_english()
+
+elif list_translate == 3:
+    add_to_data_base()
+
+else:
+    print("az list entekhab konid :/")    
