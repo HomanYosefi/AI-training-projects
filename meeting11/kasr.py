@@ -1,4 +1,4 @@
-class kasr: 
+class Kasr: 
     def __init__(self, s, m):
         self.sorat = s
         self.makhraj = m
@@ -6,25 +6,25 @@ class kasr:
     def xarb(self, kasr2):
         result_s = (self.sorat * kasr2.sorat)
         result_m = self.makhraj * kasr2.makhraj
-        result = kasr(result_s, result_m)
+        result = Kasr(result_s, result_m)
         return result
 
     def jame(self, kasr2):
         result_s = (self.sorat * kasr2.makhraj) + (kasr2.sorat * self.makhraj)
         result_m = self.makhraj * kasr2.makhraj
-        result = kasr(result_s, result_m)
+        result = Kasr(result_s, result_m)
         return result
 
     def tafrigh(self, kasr2):
         result_s = (self.sorat * kasr2.makhraj) - (kasr2.sorat * self.makhraj)
         result_m = self.makhraj * kasr2.makhraj
-        result = kasr(result_s, result_m)
+        result = Kasr(result_s, result_m)
         return result
 
     def taghsim(self, kasr2):
         result_s = (self.sorat * kasr2.makhraj)
         result_m = self.makhraj * kasr2.sorat
-        result = kasr(result_s, result_m)
+        result = Kasr(result_s, result_m)
         return result
 
     def sade_kon(self):
@@ -48,3 +48,11 @@ class kasr:
     def convert_to_number(self):
         result = self.sorat / self.makhraj
         return result    
+
+
+
+
+a = Kasr(3, 4)      
+b = Kasr(2, 3)  
+c = a.xarb(b)
+c.show()
