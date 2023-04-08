@@ -1,8 +1,8 @@
 from class_mdia import Media
 
 class Actor(Media):
-    def __init__(self, n, ag, last, jens, character):
-        super().__init__()
+    def __init__(self, dast, name, k, ims, ul, du, ca, n, ag, last, jens, character):
+        super().__init__(dast, name, k, ims, ul, du, ca)
         name_actor = n
         age = ag
         last_name = last
