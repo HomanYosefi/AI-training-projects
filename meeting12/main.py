@@ -2,6 +2,7 @@ from class_film import Film
 from class_actor import Actor
 from class_mdia import Media
 from class_series import Series
+import webbrowser
 
 PRODUCT = []
 
@@ -43,10 +44,22 @@ def reed_from_database_documentary():
     f.close()
 
 
+def reed_from_database_clip():
+    f = open(r"data_clip.txt", "r")
+
+    for line in f:
+        resut = line.split(",")
+        my_clip = Film(resut[0], resut[1], resut[2],
+                      resut[3], resut[4], resut[5], resut[6], resut[7])
+        PRODUCT.append(my_clip)
+
+    f.close()
+
 def reed_from_database():
     reed_from_database_film()
     reed_from_database_series()
     reed_from_database_documentary()
+    reed_from_database_clip()
 
 def search():
     while True:
@@ -112,9 +125,6 @@ def add():
                    url, duration, casts, episode)
         PRODUCT.append(box)
 
-    # add where ? 
-    # if 1 ... add_film() ...
-    ...
 
 
 def wite_to_database_film(med):
@@ -222,8 +232,30 @@ def edit():
 
 
 def remove():
-    ...
+    name_media = input("enter name media for remove : ")
+    for med in PRODUCT:
+        if med[1] == name_media:
+            med.show_info()
+            check_media = input("are you sure you want nto delete this item (yes or no) ? ")
+            if check_media == "yes":
+                del PRODUCT[med]
+                print("deleted this media")
+            else:
+                print("can not delete media")
 
+            break
+    else:
+        print("not found :|")
+
+def download():
+    name_media = input("enter name media for download : ")
+    for med in PRODUCT:
+        if med[1] == name_media:
+            med.show_info()
+            webbrowser.open_new_tab(med.url)
+            break
+    else:
+        print("not found :|")
 
 def show_list():
     for vidio in PRODUCT:
@@ -235,9 +267,8 @@ def show_meno():
     print("[3]-- remove")
     print("[4]-- search")
     print("[5]-- show all media")
-    print("[6]-- buy")
-    print("[7]-- download")
-    print("[8]-- exit (save edits)")
+    print("[6]-- download")
+    print("[7]-- exit (save edits)")
 
 
 print(" welcome to homan store")
@@ -266,12 +297,9 @@ while True:
         show_list()
 
     elif choice == 6:
-        ...
+        download()
 
     elif choice == 7:
-        ...
-
-    elif choice == 8:
         wite_to_database()
         exit(0)
 
