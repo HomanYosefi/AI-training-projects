@@ -1,14 +1,8 @@
 import random
+import time
 import arcade
 
 
-# class Foods(arcade.Sprite):
-#     def __init__(self):
-#         super().__init__()
-#         self.width = 30
-#         self.height = 30
-#         self.change_x = 0
-#         self.change_y = 0
 
 
 class Pear(arcade.Sprite):
@@ -61,8 +55,8 @@ class Finish(arcade.Sprite):
 class Snake(arcade.Sprite):
     def __init__(self, game):
         super().__init__()
-        self.width = 30
-        self.height = 30
+        self.width = 15
+        self.height = 15
         self.center_x = game.width // 2
         self.center_y = game.height // 2
         self.color_face = arcade.color.GREEN 
@@ -71,7 +65,7 @@ class Snake(arcade.Sprite):
         self.color_b = 0
         self.change_x = 0
         self.change_y = 0
-        self.speed = 2
+        self.speed = 15
         self.score = 0
         self.body = []
 
@@ -128,7 +122,7 @@ class Game(arcade.Window):
 
     def on_update(self, delta_time: float):
         self.snake.move()
-        if self.snake.center_x == 0 or self.snake.center_x == self.width or self.snake.center_y == 0 or self.snake.center_y == self.height:
+        if self.snake.center_x < 0 or self.snake.center_x > self.width or self.snake.center_y < 0 or self.snake.center_y > self.height:
             self.finish.show = 1
 
         if self.snake.score == -1:
@@ -161,6 +155,8 @@ class Game(arcade.Window):
                 self.golaby.show = 1
             else:
                 self.golaby.show = 0
+        
+        time.sleep(0.13)        
             
 
     def on_key_release(self, symbol: int, modifiers: int):
