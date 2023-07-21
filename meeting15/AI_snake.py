@@ -35,8 +35,16 @@ class Apple(arcade.Sprite):
         self.height = 30
         self.change_x = 0
         self.change_y = 0
-        self.center_x = random.randint(0, game.width)
-        self.center_y = random.randint(0, game.height)
+        self.list_sib_w = []
+        for i in range (0, game.width, 15):
+            self.list_sib_w.append(i)
+
+        self.list_sib_h = []
+        for i in range (0, game.height, 15):
+            self.list_sib_h.append(i)
+
+        self.center_x = random.choice(self.list_sib_w)
+        self.center_y = random.choice(self.list_sib_h)
 
 class Finish(arcade.Sprite):
     def __init__(self, game):
@@ -57,8 +65,15 @@ class Snake(arcade.Sprite):
         super().__init__()
         self.width = 15
         self.height = 15
-        self.center_x = game.width // 2
-        self.center_y = game.height // 2
+        self.list_snake_w = []
+        for i in range(0, game.width, 15):
+            self.list_snake_w.append(i)
+
+        self.list_snake_h = []
+        for i in range(0, game.height, 15):
+            self.list_snake_h.append(i)
+        self.center_x = self.list_snake_w[len(self.list_snake_w) // 2]
+        self.center_y = self.list_snake_h[len(self.list_snake_h) // 2]
         self.color_face = arcade.color.GREEN 
         self.color_body_1 = arcade.color.BABY_BLUE
         self.color_body_2 = arcade.color.APPLE_GREEN
@@ -66,9 +81,14 @@ class Snake(arcade.Sprite):
         self.change_x = 0
         self.change_y = 0
         self.speed = 15
-        self.score = 0
+        self.score = 1
         self.body = []
 
+    def test_body(self, x, y):
+        for part in self.body:
+            if part["x"] == x and part["y"] == y:
+                return 0
+        return 1
     def draw(self):
         arcade.draw_rectangle_filled(self.center_x, self.center_y, self.width, self.height, self.color_face)
         for part in self.body:
@@ -95,8 +115,8 @@ class Snake(arcade.Sprite):
             self.score += 1
         elif mive == 0:
             self.score += 2    
-        else: 
-            self.score -= 1      
+        #else: 
+            #self.score -= 1      
 
 class Game(arcade.Window):
     def __init__(self):
@@ -121,22 +141,23 @@ class Game(arcade.Window):
         arcade.finish_render()   
 
     def on_update(self, delta_time: float):
-        if self.snake.center_x < self.sib.center_x:
+        if self.snake.center_x < self.sib.center_x and self.snake.test_body(self.snake.center_x + self.snake.speed, self.snake.center_y):
             self.snake.change_x = 1
             self.snake.change_y = 0
             self.snake.move()
 
-        elif self.snake.center_x > self.sib.center_x:
-            self.snake.change_x = -1
-            self.snake.change_y = 0
-            self.snake.move()
-
-        if self.snake.center_y < self.sib.center_y:
+        elif self.snake.center_y < self.sib.center_y and self.snake.test_body(self.snake.center_x, self.snake.center_y + self.snake.speed):
             self.snake.change_x = 0
             self.snake.change_y = 1
             self.snake.move()
 
-        elif self.snake.center_y > self.sib.center_y:
+        elif self.snake.center_x > self.sib.center_x and self.snake.test_body(self.snake.center_x - self.snake.speed, self.snake.center_y):
+            self.snake.change_x = -1
+            self.snake.change_y = 0
+            self.snake.move()
+
+
+        elif self.snake.center_y > self.sib.center_y and self.snake.test_body(self.snake.center_x, self.snake.center_y - self.snake.speed):
             self.snake.change_x = 0
             self.snake.change_y = -1
             self.snake.move()
@@ -146,13 +167,6 @@ class Game(arcade.Window):
             self.snake.eat(self)
             self.sib = Apple(self)
 
-        if self.snake.center_x == 5 or self.snake.center_x == self.width - 5 or self.snake.center_y == 5 or self.snake.center_y == self.height - 5:
-            self.status = "game over"
-            self.on_draw()
-
-        if self.snake.score == -1:
-            self.status = "game over"
-            self.on_draw()
         self.snake.move()
         #if self.snake.center_x < 0 or self.snake.center_x > self.width or self.snake.center_y < 0 or self.snake.center_y > self.height:
         #    self.finish.show = 1
@@ -174,7 +188,7 @@ class Game(arcade.Window):
             self.goh = Shet(self)
             print("score : ", self.snake.score)
 
-        elif arcade.check_for_collision(self.snake, self.sib):
+        if arcade.check_for_collision(self.snake, self.sib):
             self.snake.eat(1)
             print("score : ", self.snake.score)
             del self.sib
@@ -192,20 +206,7 @@ class Game(arcade.Window):
         time.sleep(0.13)        
             
 
-    def on_key_release(self, symbol: int, modifiers: int):
-        if symbol == arcade.key.UP or symbol == arcade.key.W:
-            self.snake.change_x = 0
-            self.snake.change_y = 1
-        elif symbol == arcade.key.DOWN or symbol == arcade.key.S:
-            self.snake.change_x = 0
-            self.snake.change_y = -1
-        elif symbol == arcade.key.RIGHT or symbol == arcade.key.D:
-            self.snake.change_x = 1
-            self.snake.change_y = 0
-        elif symbol == arcade.key.LEFT or symbol == arcade.key.A:
-            self.snake.change_x = -1
-            self.snake.change_y = 0
-            
+
 
 
 if __name__ == "__main__":
