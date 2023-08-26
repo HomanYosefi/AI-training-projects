@@ -146,23 +146,41 @@ class Game(arcade.Window):
             self.score -= 1
 
 
-        for i in range(len(self.enemy_list)):
-            if arcade.check_for_collision(self.toop, self.enemy_list[i]):
-                del self.enemy_list[i]
-                self.enemy_list.remove(self.enemy_list[i])
-                ...  # del shay
+
+        item = 0
+        while item < len(self.enemy_list):
+            if arcade.check_for_collision(self.toop, self.enemy_list[item]):
+                del self.enemy_list[item]
+            else:
+                item += 1
+
+        if len(self.enemy_list) == 0: 
+            self.draw_enemy = 1
 
 
         if self.draw_enemy == 1:
             self.draw_enemy = 0
-            for y in self.h_enemy:
-                x = 50 + self.w_enemy // 2
-                num_enemy = random.randint(4, 8)
-                for i in range(num_enemy):
-                    doshman = random.choice(self.enemy_list)
-                    doshman(self, x, y)
-                    x += self.w_enemy
-                    doshman.draw()
+            # self.enemy_list = [
+            #     self.bow, self.enderman, self.octaopus, self.tnt]
+            # for y in self.h_enemy:
+            #     x = 50 + self.w_enemy // 2
+            #     num_enemy = random.randint(4, 8)
+            #     for i in range(num_enemy):
+            #         doshman = random.choice(self.enemy_list)
+            #         doshman(self, x, y)
+            #         x += self.w_enemy
+            #         doshman.draw()
+            for i in range(self.w_enemy,  50 + self.w_enemy // 2 +
+                           (self.w_enemy * 7), self.w_enemy):
+                           for i in self.h_enemy:
+                                    self.bow = Bow(self, 50 + self.w_enemy // 2, self.h_enemy[0])
+                                    self.enderman = Enderman(
+                                    self, 50 + self.w_enemy // 2 + (self.w_enemy), self.h_enemy[0])
+                                    self.octaopus = Octaopus(
+                                    self, 50 + self.w_enemy // 2 + (self.w_enemy * 2), self.h_enemy[0])
+                                    self.tnt = Tnt(self, 50 + self.w_enemy // 2 +
+                                            (self.w_enemy * 3), self.h_enemy[0])
+
 
 
     def on_draw(self):
