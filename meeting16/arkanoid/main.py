@@ -1,4 +1,5 @@
 import random
+import time
 import arcade
 
 
@@ -97,6 +98,18 @@ class Tnt(arcade.Sprite):
         self.change_y = 0
 
 
+class Finish_game(arcade.Sprite):
+    def __init__(self, game):
+        super().__init__("game_over.png")
+        self.width = game.width
+        self.height = game.height
+        self.change_x = 0
+        self.change_y = 0
+        self.center_x = game.width // 2
+        self.center_y = game.height // 2
+
+
+
 class Game(arcade.Window):
     def __init__(self, width = 400, height = 800, title= 'arkanoid'):
         super().__init__()
@@ -117,9 +130,16 @@ class Game(arcade.Window):
         self.enemy_list = [self.bow, self.enderman, self.octaopus, self.tnt]
         self.enemy_show = []
         self.debog = 0
-        self.score = 0
+        self.score = 3
+        self.finish_games = Finish_game(self)
 
     def on_update(self, delta_time: float):
+        if self.score == 0 : 
+            self.finish_games.draw()
+            time.sleep(5)
+            exit()
+
+
         if arcade.check_for_collision(self.tir, self.toop):
             self.toop.change_y *= -1
 
@@ -143,8 +163,9 @@ class Game(arcade.Window):
 
         if self.toop.center_y < 0:
             del self.toop
-            self.toop = Ball(self, self.tir.center_x, self.tir.center_y)
             self.score -= 1
+            self.toop = Ball(self, self.tir.center_x, self.tir.center_y)
+            
 
 
 
@@ -188,6 +209,10 @@ class Game(arcade.Window):
                                         break
                                     case _: 
                                         print("null")
+
+        if arcade.check_for_collision(self.enderman, self.toop) and self.draw_enemy == 0:
+            self.toop.change_x *= -1
+            self.toop.change_y *= -1
                                     
                                     
                                     
@@ -204,6 +229,10 @@ class Game(arcade.Window):
         arcade.draw_rectangle_outline(self.width // 2,
                                       self.height // 2, self.width - 20,
                                       self.height - 20, arcade.color.DARK_GREEN, border_width=10)
+        if self.score == 0:
+            self.finish_games.draw()
+
+
         arcade.finish_render()
 
 
