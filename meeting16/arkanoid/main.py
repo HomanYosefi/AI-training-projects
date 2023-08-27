@@ -2,6 +2,7 @@ import random
 import arcade
 
 
+
 class Ball(arcade.Sprite):
     def __init__(self, game, x, y):
         super().__init__("ball.png")
@@ -160,26 +161,37 @@ class Game(arcade.Window):
 
         if self.draw_enemy == 1:
             self.draw_enemy = 0
-            # self.enemy_list = [
-            #     self.bow, self.enderman, self.octaopus, self.tnt]
-            # for y in self.h_enemy:
-            #     x = 50 + self.w_enemy // 2
-            #     num_enemy = random.randint(4, 8)
-            #     for i in range(num_enemy):
-            #         doshman = random.choice(self.enemy_list)
-            #         doshman(self, x, y)
-            #         x += self.w_enemy
-            #         doshman.draw()
             for i in range(self.w_enemy,  50 + self.w_enemy // 2 +
                            (self.w_enemy * 7), self.w_enemy):
-                           for i in self.h_enemy:
-                                    self.bow = Bow(self, 50 + self.w_enemy // 2, self.h_enemy[0])
-                                    self.enderman = Enderman(
-                                    self, 50 + self.w_enemy // 2 + (self.w_enemy), self.h_enemy[0])
-                                    self.octaopus = Octaopus(
-                                    self, 50 + self.w_enemy // 2 + (self.w_enemy * 2), self.h_enemy[0])
-                                    self.tnt = Tnt(self, 50 + self.w_enemy // 2 +
-                                            (self.w_enemy * 3), self.h_enemy[0])
+                            for j in self.h_enemy:
+                                num = random.randint(1, 6)
+                                match num:
+                                    case 1:
+                                        self.bow = Bow(self, i, j)
+                                        self.enemy_list.append(self.bow)
+                                        self.bow.draw()
+                                        break
+                                    case 2: 
+                                        self.enderman = Enderman(self, i, j)
+                                        self.enemy_list.append(self.enderman)
+                                        self.enderman.draw()
+                                        break
+                                    case 3: 
+                                        self.octaopus = Octaopus(self, i, j)
+                                        self.enemy_list.append(self.octaopus)
+                                        self.octaopus.draw()
+                                        break
+                                    case 4:     
+                                        self.tnt = Tnt(self, i, j)
+                                        self.enemy_list.append(self.tnt)
+                                        self.tnt.draw()
+                                        break
+                                    case _: 
+                                        print("null")
+                                    
+                                    
+                                    
+                                    
 
 
 
